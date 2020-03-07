@@ -88,6 +88,7 @@ class BaseSpotlight:
         for attr in attrs:
             if attr not in data:
                 data[attr] = "(error)"
+                res.append(data[attr])
                 continue
 
             if data[attr] == self.NULL_VALUE:

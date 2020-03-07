@@ -21,7 +21,12 @@ class TestBaseSpotlight(unittest.TestCase):
             "kMDItemLastUsedDate",
             "kMDItemUsedDates"
         ]
-        spotlight.convert_to_array(data, attrs)
+        data = spotlight.convert_to_array(data, attrs)
+        
+        self.assertEqual(data[0], file_path)
+        self.assertEqual(data[1], '(error)')
+        self.assertEqual(data[2], '(error)')
+        self.assertEqual(data[3], '(error)')
 
 
 if __name__ == "__main__":
