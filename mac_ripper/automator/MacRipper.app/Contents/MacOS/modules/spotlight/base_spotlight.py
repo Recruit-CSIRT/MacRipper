@@ -86,6 +86,11 @@ class BaseSpotlight:
     def convert_to_array(self, data, attrs):
         res = []
         for attr in attrs:
+            if attr not in data:
+                data[attr] = "(error)"
+                res.append(data[attr])
+                continue
+
             if data[attr] == self.NULL_VALUE:
                 res.append(data[attr])
             elif type(data[attr]) is str:
