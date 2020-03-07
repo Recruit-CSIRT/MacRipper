@@ -2,7 +2,7 @@
 
 # MacRipper
 
-Artifact analysis tool for macOS
+A DFIR tool to analyze artifacts on macOS  
 
 <img src="imgs/macripper_cli_usage.gif" width="700">
 <img src="imgs/macripper_gui_usage.gif" width="700">
