@@ -38,6 +38,7 @@ class UnifiedLogs:
 
     def __init__(self, evidence_root, output_path, log):
         """Init function.
+
         Args:
             evidence_root: The evidence root directory path you mounted. e.g. /Volumes/disk3s1/.
             output_path: The output directory path.
@@ -52,6 +53,7 @@ class UnifiedLogs:
 
     def copy_unified_logs(self):
         """Copy Unified Logs from evidence_root to output_path.
+
         """
 
         self.log.debug("[+] Start to copy Unified Logs")
@@ -79,10 +81,12 @@ class UnifiedLogs:
         try:
             proc = subprocess.run(['cp', '-Rp', log_path + "/", self.logarchive_path])
         except subprocess.SubprocessError as err:
-            self.log.warning(f"[-] Error: copy failed: Error: {err}")
+            self.log.warning(f"[-] Error: copy failed. {err}")
 
         if proc.returncode is not 0:
-            self.log.warning(f"[-] Error: copy failed: Error: {proc}")
+            self.log.warning(f"[-] Error: copy failed. {proc}")
+
+        self.log.debug(f"[+] Copied: {log_path}")
 
     def create_info_plist(self):
         if os.path.exists(os.path.join(self.logarchive_path, "Info.plist")):
@@ -104,6 +108,7 @@ class UnifiedLogs:
 
     def output_unifiled_log(self, predicate="", start="", end="", tz="", output_format="csv", file_name_suffix=""):
         """Parse Unified Logs and output.
+
         Args:
             predicate: The filter condition of Unified Logs. e.g. "eventMessage contains 'hfs'"
             start: The filter condition of the start datetime. e.g. "2019-01-01 10:00:00" or "2019-01-01"
@@ -200,6 +205,7 @@ class UnifiedLogs:
 
     def choose_preset(self, preset="", start="", end="", tz="", output_format="csv"):
         """Set preset outputs.
+
         Args:
             preset: The preset condition of Unified Logs.
             start: The filter condition of the start datetime. e.g. "2019-01-01 10:00:00" or "2019-01-01"
