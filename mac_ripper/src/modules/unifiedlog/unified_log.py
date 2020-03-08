@@ -81,10 +81,12 @@ class UnifiedLogs:
         try:
             proc = subprocess.run(['cp', '-Rp', log_path + "/", self.logarchive_path])
         except subprocess.SubprocessError as err:
-            self.log.warning(f"[-] Error: copy failed: Error: {err}")
+            self.log.warning(f"[-] Error: copy failed. {err}")
 
         if proc.returncode is not 0:
-            self.log.warning(f"[-] Error: copy failed: Error: {proc}")
+            self.log.warning(f"[-] Error: copy failed. {proc}")
+
+        self.log.debug(f"[+] Copied: {log_path}")
 
     def create_info_plist(self):
         if os.path.exists(os.path.join(self.logarchive_path, "Info.plist")):
