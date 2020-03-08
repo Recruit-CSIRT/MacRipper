@@ -59,40 +59,34 @@ class UnifiedLogs:
         self.log.debug("[+] Start to copy Unified Logs")
 
         # uuidtextのパスの調査
-        uuidtext_path = os.path.join(self.evidence_root, "var/db/uuidtext")
-        self.log.debug(f"[+] Now copying Unified Logs from {uuidtext_path}")
-        if not os.path.exists(uuidtext_path):
-            self.log.warning(f"[-] Error: Directory {uuidtext_path} is not exists.")
-            return
-
-        # uuidtext logをコピー
-        try:
-            proc = subprocess.run(['cp', '-Rp', uuidtext_path + "/", self.logarchive_path])
-        except subprocess.SubprocessError as err:
-            self.log.warning(f"[-] Error: copy failed: Error: {err}")
-
-        if proc.returncode is not 0:
-            self.log.warning(f"[-] Error: copy failed: Error: {proc}")
+        for uuidtext_path in ["var/db/uuidtext", "private/var/db/uuidtext"]:
+            self.copy(os.path.join(self.evidence_root, uuidtext_path))
 
         # diagnosticsのパスの調査
-        diagnostics_path = os.path.join(self.evidence_root, "var/db/diagnostics")
-        self.log.debug(f"[+] Now copying Unified Logs from {diagnostics_path}")
-        if not os.path.exists(diagnostics_path):
-            self.log.warning(f"[-] Error: Directory {diagnostics_path} is not exists.")
-            return
+        for diagnostics_path in ["var/db/diagnostics", "private/var/db/diagnostics"]:
+            self.copy(os.path.join(self.evidence_root, diagnostics_path))
 
-        # diagnostics logをコピー
-        try:
-            proc = subprocess.run(['cp', '-Rp', diagnostics_path + "/", self.logarchive_path])
-        except subprocess.SubprocessError as err:
-            self.log.warning(f"[-] Error: copy failed: Error: {err}")
-
-        if proc.returncode is not 0:
-            self.log.warning(f"[-] Error: copy failed: Error: {proc}")
+        # Info.plistの作成
+        self.create_info_plist()
 
         self.log.debug(f"[+] Unified Logs copy is completed")
 
-        self.create_info_plist()
+    def copy(self, log_path):
+        self.log.debug(f"[+] Now copying Unified Logs from {log_path}")
+        if not os.path.exists(log_path):
+            self.log.warning(f"[-] Error: Directory {log_path} is not exists.")
+            return
+
+        # logをコピー
+        try:
+            proc = subprocess.run(['cp', '-Rp', log_path + "/", self.logarchive_path])
+        except subprocess.SubprocessError as err:
+            self.log.warning(f"[-] Error: copy failed. {err}")
+
+        if proc.returncode is not 0:
+            self.log.warning(f"[-] Error: copy failed. {proc}")
+
+        self.log.debug(f"[+] Copied: {log_path}")
 
     def create_info_plist(self):
         if os.path.exists(os.path.join(self.logarchive_path, "Info.plist")):
@@ -294,9 +288,5 @@ if __name__ == '__main__':
     logger.debug('hello')
 
     # インスタンス作成
-    #print(args)
     unified_logs = UnifiedLogs(args.root, args.output, logger)
     unified_logs.parse(args.start, args.end, args.predicate, args.output_format, args.timezone, args.name)
-
-
-
