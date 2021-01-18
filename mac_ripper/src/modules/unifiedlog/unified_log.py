@@ -98,7 +98,7 @@ class UnifiedLogs:
 <plist version="1.0">
     <dict>
         <key>OSArchiveVersion</key>
-        <integer>4</integer>
+        <integer>2</integer>
     </dict>
 </plist>
         """
